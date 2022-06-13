@@ -2,8 +2,8 @@ from tempfile import SpooledTemporaryFile
 import pyxel
 import SpObj
 
-WIDTH=512
-HEIGHT=512
+WIDTH=256
+HEIGHT=256
 FPS=60
 
 class App:
@@ -71,7 +71,7 @@ class App:
 
         #障害物
         #pyxel.blt(self.ex,self.ey, 0, 16,0, 16, 16)
-        self.ensp.spdraw(200, 200)
+        self.ensp.spdraw(100, 100)
         self.ensp.show_collision_r(0)
 
         #円形コリジョンの衝突判定
@@ -84,9 +84,7 @@ class App:
         dist = pyxel.sqrt((self.plsp._x-self.ensp._x)**2 + (self.plsp._y-self.ensp._y)**2)
         #self.color = 6
         
-        if dist < self.plsp._col_r + self.ensp._col_r:
-        #if self.dist <= (self.ensp._col_r):
-            #self.color = 8
+        if dist <= (self.plsp._col_r + self.ensp._col_r):
             self.plsp.show_collision_r(1)
 
         pyxel.text(10,10,str(round(dist,2)),7)

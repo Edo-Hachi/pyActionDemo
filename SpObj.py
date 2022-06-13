@@ -22,7 +22,7 @@ class sprite:
         self._imgc = 15  #マスクカラー
 
     #スプライト情報設定
-    def spset(self, imgpage, w,h, ox, oy, u, v, mask_color):
+    def spset(self, imgpage=0, w=16,h=16, ox=0, oy=0, u=0, v=0, mask_color=15):
         self._imgpage = imgpage
 
         self._w = w    #スプライトサイズ  
@@ -34,7 +34,7 @@ class sprite:
         self._imgu = u #リソース画像の参照座標
         self._imgv = v
         
-        self._imgc = mask_color  #マスクカラー
+        self._imgc = mask_color  #透過Color
 
     #原点設定
     def sphome(self, ox, oy):
@@ -52,11 +52,12 @@ class sprite:
             pyxel.blt(self._x+self._ox, self._y+self._oy, self._imgpage, self._imgu, self._imgv, self._w, self._h, self._imgc)
             #pyxel.blt(self.__x, self.__y, self.__imgpage, self.__imgu, self.__imgv, self.__w, self.__h, self.__imgc)
     
-    #コリジョン円[半径]
+    #コリジョン円設定[半径]
     def spcolc(self, r):
         self._col_r = r
     
-    #コリジョン範囲表示
+    #コリジョン範囲表示(DEBUG)
+    #fill=0 塗りつぶさない / fill=1 塗りつぶす
     def show_collision_r(self, fill=0):
         if self._col_r != -1:
             if fill==0:
