@@ -23,7 +23,9 @@ class App:
         #self.plsp.spset(0, 0,0, 15)
 
         self.plsp = SpObj.sprite()
+        #self.plsp.spset(0, 16,16, 8,8, 0,0, 15)
         self.plsp.spset(0, 16,16, 8,8, 0,0, 15)
+        self.plsp.sphome(8,8)
         self.plsp.spshow(True)
         self.plsp.spcolc(8)
 
@@ -31,14 +33,6 @@ class App:
         self.ensp.spset(0, 16,16, 8,8, 16,0, 15)
         self.ensp.spshow(True)
         self.ensp.spcolc(8)
-
-        #self.x1=100
-        #self.y1=100
-        #self.r1=25
-
-        #self.x2=130
-        #self.y2=130
-        #self.r2=32
 
         self.ex=WIDTH   #enemy pos
         self.ey=HEIGHT-32
@@ -67,30 +61,33 @@ class App:
 
         #PlayerChar
         self.plsp.spdraw(self.px, self.py)
-        self.plsp.show_collision_r(0)
+        self.plsp.show_collision_c(0)
 
         #障害物
         #pyxel.blt(self.ex,self.ey, 0, 16,0, 16, 16)
         self.ensp.spdraw(100, 100)
-        self.ensp.show_collision_r(0)
+        self.ensp.show_collision_c(0)
+
+        ret = self.plsp.sphitc(self.ensp)
+        if ret==True:
+            self.plsp.show_collision_c(1)
+
+        #self.dist = pyxel.sqrt((self.x2-(self.ensp._x + self.ensp._ox))**2 + (self.y2-(self.ensp._y+self.ensp._oy))**2)
+        #dist = pyxel.sqrt((self.plsp._x-self.ensp._x)**2 + (self.plsp._y-self.ensp._y)**2)
+        #self.color = 6
+        
+        #if dist <= (self.plsp._col_r + self.ensp._col_r):
+        #    self.plsp.show_collision_c(1)
+
+        #pyxel.text(10,10,str(round(dist,2)),7)
+
+        pyxel.line(0,0, self.px, self.py,9)
+
+
+App()
 
         #円形コリジョンの衝突判定
         #self.dist = pyxel.sqrt((self.x2-self.x1)**2 + (self.y2-self.y1)**2)
         #self.color = 6
         #if self.dist < (self.r1 + self.r2):
         #    self.color= 8
-
-        #self.dist = pyxel.sqrt((self.x2-(self.ensp._x + self.ensp._ox))**2 + (self.y2-(self.ensp._y+self.ensp._oy))**2)
-        dist = pyxel.sqrt((self.plsp._x-self.ensp._x)**2 + (self.plsp._y-self.ensp._y)**2)
-        #self.color = 6
-        
-        if dist <= (self.plsp._col_r + self.ensp._col_r):
-            self.plsp.show_collision_r(1)
-
-        pyxel.text(10,10,str(round(dist,2)),7)
-
-        #pyxel.line(0,0, self.px, self.py,9)
-
-
-App()
-
