@@ -23,16 +23,18 @@ class App:
         #self.plsp.spset(0, 0,0, 15)
 
         self.plsp = SpObj.sprite()
-        #self.plsp.spset(0, 16,16, 8,8, 0,0, 15)
         self.plsp.spset(0, 16,16, 8,8, 0,0, 15)
         self.plsp.sphome(8,8)
         self.plsp.spshow(True)
         self.plsp.spcolc(8)
+        self.plsp.spcolr(0,0,16,16)
+
 
         self.ensp = SpObj.sprite()
         self.ensp.spset(0, 16,16, 8,8, 16,0, 15)
         self.ensp.spshow(True)
         self.ensp.spcolc(8)
+        self.ensp.spcolr(0,0,16,16)
 
         self.ex=WIDTH   #enemy pos
         self.ey=HEIGHT-32
@@ -54,34 +56,43 @@ class App:
 
 
     def draw(self):
-        pyxel.cls(0)
+        pyxel.cls(1)
 
         #床
         self.drwflr()
 
         #PlayerChar
         self.plsp.spdraw(self.px, self.py)
-        self.plsp.show_collision_c(0)
+        #self.plsp.show_collision_c(0)
+        self.plsp.show_collision_r(False)
 
         #障害物
-        #pyxel.blt(self.ex,self.ey, 0, 16,0, 16, 16)
         self.ensp.spdraw(100, 100)
-        self.ensp.show_collision_c(0)
+        self.ensp.show_collision_r(False)
+        #self.ensp.show_collision_c(0)
 
-        ret = self.plsp.sphitc(self.ensp)
-        if ret==True:
-            self.plsp.show_collision_c(1)
+        pleft = self.plsp._x + self.plsp._ox
+        pright = pleft + self.plsp._col_w
+        ptop =  self.plsp._y + self.plsp._oy
+        pbottom =  ptop + self.plsp._col_h
 
-        #self.dist = pyxel.sqrt((self.x2-(self.ensp._x + self.ensp._ox))**2 + (self.y2-(self.ensp._y+self.ensp._oy))**2)
-        #dist = pyxel.sqrt((self.plsp._x-self.ensp._x)**2 + (self.plsp._y-self.ensp._y)**2)
-        #self.color = 6
-        
-        #if dist <= (self.plsp._col_r + self.ensp._col_r):
-        #    self.plsp.show_collision_c(1)
+        eleft = self.ensp._x + self.ensp._ox
+        eright = eleft + self.ensp._col_w
+        etop =  self.ensp._y + self.ensp._oy
+        ebottom =  etop + self.ensp._col_h
 
-        #pyxel.text(10,10,str(round(dist,2)),7)
+        if pleft < eright and \
+            eleft < pright and \
+            ptop < ebottom and \
+            etop < pbottom:
 
-        pyxel.line(0,0, self.px, self.py,9)
+            self.ensp.show_collision_r(True)
+
+
+
+
+
+        #pyxel.line(0,0, self.px, self.py,9)
 
 
 App()

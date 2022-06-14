@@ -1,3 +1,4 @@
+from xmlrpc.client import Boolean
 import pyxel
 
 class sprite:
@@ -12,6 +13,12 @@ class sprite:
         self._oy = 0 #self._h / 2
         
         self._col_r = -1   #collision round size
+        
+        self._col_x = -1   #collision rect data
+        self._col_y = -1
+        self._col_w = -1
+        self._col_h = -1
+
         self._show = False
 
         self._imgpage = 0 #スプライト参照ページ
@@ -50,7 +57,6 @@ class sprite:
         self._y = y
         if self._show == True:
             pyxel.blt(self._x-self._ox, self._y-self._oy, self._imgpage, self._imgu, self._imgv, self._w, self._h, self._imgc)
-            #pyxel.blt(self.__x, self.__y, self.__imgpage, self.__imgu, self.__imgv, self.__w, self.__h, self.__imgc)
     
     #コリジョン円設定[半径]
     def spcolc(self, r):
@@ -66,19 +72,29 @@ class sprite:
     
     #コリジョン範囲表示(DEBUG)
     #fill=0 塗りつぶさない / fill=1 塗りつぶす
-    def show_collision_c(self, fill=0):
+    def show_collision_c(self, fill:Boolean=False):
         if self._col_r != -1:
-            if fill==0:
+            if fill==False:
                 pyxel.circb(self._x, self._y, self._col_r, 8)
             else:
                 pyxel.circ(self._x, self._y, self._col_r, 8)
 
-    #コリジョン矩形
+    #コリジョン矩形設定
     def spcolr(self, x,y, w,h):
-        self._col_x = x
-        self._col_y = y
+        self._col_x = x - self._ox  #collision rect data
+        self._col_y = y - self._oy
         self._col_w = w
         self._col_h = h
 
-    def show_collision_r(self, fill=0):
-        pass
+    #コリジョン範囲表示(DEBUG)
+    #fill=0 塗りつぶさない / fill=1 塗りつぶす
+    def show_collision_r(self, fill:Boolean=False):
+        x1 = self._x + self._col_x
+        y1 = self._y + self._col_y
+        if fill == False:
+            pyxel.rectb(x1, y1, self._col_w, self._col_h, 8)
+        else:
+            pyxel.rect(x1, y1, self._col_w, self._col_h, 8)
+
+
+
