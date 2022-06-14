@@ -19,6 +19,12 @@ class sprite:
         self._col_w = -1
         self._col_h = -1
 
+        self._col_l = 0  #矩形コリジョン座標
+        self._col_r = 0
+        self._col_t = 0
+        self._col_b = 0
+
+
         self._show = False
 
         self._imgpage = 0 #スプライト参照ページ
@@ -55,6 +61,12 @@ class sprite:
     def spdraw(self, x, y):
         self._x = x
         self._y = y
+
+        self._col_l = self._x-self._ox  #矩形コリジョン座標計算
+        self._col_r = self._col_l + self._col_w
+        self._col_t = self._y
+        self._col_b = self._col_t + self._col_h
+
         if self._show == True:
             pyxel.blt(self._x-self._ox, self._y-self._oy, self._imgpage, self._imgu, self._imgv, self._w, self._h, self._imgc)
     
@@ -63,6 +75,7 @@ class sprite:
         self._col_r = r
     
     #コリジョン判定(円形)
+    #spobj=コリジョン判定対象スプライトオブジェクト
     def sphitc(self, spobj):
         d = pyxel.sqrt((self._x-spobj._x)**2 + (self._y-spobj._y)**2)
         if d <= (self._col_r + spobj._col_r):
@@ -96,5 +109,16 @@ class sprite:
         else:
             pyxel.rect(x1, y1, self._col_w, self._col_h, 8)
 
+    #コリジョン矩形判定
+    #spobj=コリジョン判定対象スプライトオブジェクト
+    def sphitr(self, spobj):
+        if self._col_l < spobj._col_r and \
+            spobj._col_l < self._col_r and \
+            self._col_t < spobj._col_b and \
+            spobj._col_t < self._col_b:
+
+            return True
+        else:
+            return False
 
 

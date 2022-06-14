@@ -71,34 +71,10 @@ class App:
         self.ensp.show_collision_r(False)
         #self.ensp.show_collision_c(0)
 
-        pleft = self.plsp._x + self.plsp._ox
-        pright = pleft + self.plsp._col_w
-        ptop =  self.plsp._y + self.plsp._oy
-        pbottom =  ptop + self.plsp._col_h
-
-        eleft = self.ensp._x + self.ensp._ox
-        eright = eleft + self.ensp._col_w
-        etop =  self.ensp._y + self.ensp._oy
-        ebottom =  etop + self.ensp._col_h
-
-        if pleft < eright and \
-            eleft < pright and \
-            ptop < ebottom and \
-            etop < pbottom:
-
+        if self.plsp.sphitr(self.ensp) == True:
             self.ensp.show_collision_r(True)
-
-
-
 
 
         #pyxel.line(0,0, self.px, self.py,9)
 
-
 App()
-
-        #円形コリジョンの衝突判定
-        #self.dist = pyxel.sqrt((self.x2-self.x1)**2 + (self.y2-self.y1)**2)
-        #self.color = 6
-        #if self.dist < (self.r1 + self.r2):
-        #    self.color= 8
