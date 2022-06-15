@@ -16,6 +16,7 @@ class App:
         for x in range(0,WIDTH,16):
             flr = SpObj.sprite()
             flr.spset(1, 16,16, 0,0, 0,0, 15)
+            #flr.sphome(0,0)
             flr.spshow(True)
             flr.spcolr(0,0,16,16)
 

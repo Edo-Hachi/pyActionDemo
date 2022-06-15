@@ -64,7 +64,7 @@ class sprite:
 
         self._col_l = self._x-self._ox  #矩形コリジョン座標計算
         self._col_r = self._col_l + self._col_w
-        self._col_t = self._y
+        self._col_t = self._y-self._oy
         self._col_b = self._col_t + self._col_h
 
         if self._show == True:
