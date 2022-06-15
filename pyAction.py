@@ -1,4 +1,5 @@
-from tempfile import SpooledTemporaryFile
+#from tempfile import SpooledTemporaryFile
+from numpy import True_
 import pyxel
 import SpObj
 
@@ -6,21 +7,32 @@ WIDTH=256
 HEIGHT=256
 FPS=60
 
+FloorList =[]  #床管理リスト
+
 class App:
 
-    #床描画
-    def drwflr(self):
-        x=0
+    #床オブジェクト　
+    def initFlr(self):
         for x in range(0,WIDTH,16):
-            pyxel.blt(x,HEIGHT-16, 1, 0,0, 16,16)
+            flr = SpObj.sprite()
+            flr.spset(1, 16,16, 0,0, 0,0, 15)
+            flr.spshow(True)
+            flr.spcolr(0,0,16,16)
 
+            FloorList.append(flr)
+
+            #print(x)
+
+    def drwFlr(self):
+        x=0
+        #print(len(FloorList))
+        for i in range(len(FloorList)):
+            FloorList[i].spdraw(x, HEIGHT-16)
+            FloorList[i].show_collision_r(False)
+            x+=16
 
     def __init__(self):
-        #self.newsp = SpObj.sprite(10,10,-8,-8,True)
-        #self.newsp.spset(0,0,0,15)
 
-        #self.plsp = SpObj.sprite(100,100,0,0,True)
-        #self.plsp.spset(0, 0,0, 15)
 
         self.plsp = SpObj.sprite()
         self.plsp.spset(0, 16,16, 8,8, 0,0, 15)
@@ -38,6 +50,8 @@ class App:
 
         self.ex=WIDTH   #enemy pos
         self.ey=HEIGHT-32
+
+        self.initFlr()
 
         pyxel.init(WIDTH, HEIGHT, "pyActionTest", FPS)
         pyxel.load("./assets/pyActTest.pyxres")
@@ -59,7 +73,7 @@ class App:
         pyxel.cls(1)
 
         #床
-        self.drwflr()
+        self.drwFlr()
 
         #PlayerChar
         self.plsp.spdraw(self.px, self.py)
@@ -73,7 +87,13 @@ class App:
 
         if self.plsp.sphitr(self.ensp) == True:
             self.ensp.show_collision_r(True)
-
+        
+        #床との接触判定
+        for i in range(len(FloorList)):
+            if self.plsp.sphitr(FloorList[i])==True:
+                #print("Hit")
+                FloorList[i].show_collision_r(True)
+                
 
         #pyxel.line(0,0, self.px, self.py,9)
 
