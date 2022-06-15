@@ -1,4 +1,5 @@
 #from tempfile import SpooledTemporaryFile
+from email.header import Header
 from numpy import True_
 import pyxel
 import SpObj
@@ -21,9 +22,8 @@ class App:
             flr.spcolr(0,0,16,16)
 
             FloorList.append(flr)
-
-            #print(x)
-
+    
+    #床オブジェクト描画
     def drwFlr(self):
         x=0
         #print(len(FloorList))
@@ -33,9 +33,10 @@ class App:
             x+=16
 
     def __init__(self):
-
+        
+        #player
         self.px=60
-        self.py=HEIGHT-32
+        self.py=HEIGHT-16
 
         self.vx = 0
         self.vy = 0
@@ -44,14 +45,18 @@ class App:
         self.flgJmp=False
 
         self.plsp = SpObj.sprite()
-        self.plsp.spset(0, 16,16, 8,8, 0,0, 15)
-        #self.plsp.sphome(8,8)
-        self.plsp.sphome(0,0)
+        self.plsp.spset(0, 16,16, 0,0, 0,0, 15)
         self.plsp.spshow(True)
-        self.plsp.spcolc(8)
         self.plsp.spcolr(0,0,16,16)
 
-
+        #enemy
+        self.ensp = SpObj.sprite()
+        self.ensp.spset(0, 16,16, 0,0, 16,0, 15)
+        self.ensp.spshow(True)
+        self.ensp.spcolr(0,0,16,16)
+        self.ex = WIDTH+16
+        
+        #floor
         self.initFlr()
 
         pyxel.init(WIDTH, HEIGHT, "pyActionTest", FPS)
@@ -62,20 +67,11 @@ class App:
         if pyxel.btnp(pyxel.KEY_Q):
             pyxel.quit()
 
-
         #LR
         if pyxel.btn(pyxel.KEY_LEFT):
-            #self.vx = -2
             self.px -= 2
         if pyxel.btn(pyxel.KEY_RIGHT):
             self.px += 2
-            #self.vx = 2
-
-
-        #移動
-        #self.px += self.vx
-
-        self.vx=0
 
         #Jump
         if pyxel.btnp(pyxel.KEY_SPACE):
@@ -89,6 +85,15 @@ class App:
 
         #プレイヤーのコリジョン領域を更新
         self.plsp.spcolr_set(self.px, self.py)
+
+        #Enemy Move
+        self.ex-=3
+        if self.ex < -16:
+            self.ex = WIDTH+16
+        
+        #敵との接触判定
+        if self.plsp.sphitr(self.ensp)==True:
+            print("Hit")
 
         #床との接触判定
         for i in range(len(FloorList)):
@@ -106,13 +111,12 @@ class App:
 
         #PlayerChar
         self.plsp.spdraw(self.px, self.py)
-        #self.plsp.show_collision_c(0)
-        self.plsp.show_collision_r(False)
 
-        #床表示
+        #Enemy
+        self.ensp.spdraw(self.ex, HEIGHT-32)
+
+        #Floor
         self.drwFlr()
  
-
-        #pyxel.line(0,0, self.px, self.py,9)
 
 App()

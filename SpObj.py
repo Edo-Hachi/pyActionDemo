@@ -99,6 +99,7 @@ class sprite:
         self._col_y = y - self._oy
         self._col_w = w
         self._col_h = h
+        #print(self._col_x, self._col_y, self._col_w, self._col_h)
 
     #強制的にコリジョンを設定する（描画前に判定したい時用）
     def spcolr_set(self, x, y):
