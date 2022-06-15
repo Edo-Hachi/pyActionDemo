@@ -54,6 +54,7 @@ class sprite:
         self._ox = ox    #原点
         self._oy = oy
     
+    #スプライト表示、非表示
     def spshow(self, show:bool):
         self._show = show
 
@@ -98,6 +99,16 @@ class sprite:
         self._col_y = y - self._oy
         self._col_w = w
         self._col_h = h
+
+    #強制的にコリジョンを設定する（描画前に判定したい時用）
+    def spcolr_set(self, x, y):
+        self._x = x
+        self._y = y
+
+        self._col_l = self._x-self._ox  #矩形コリジョン座標計算
+        self._col_r = self._col_l + self._col_w
+        self._col_t = self._y-self._oy
+        self._col_b = self._col_t + self._col_h
 
     #コリジョン範囲表示(DEBUG)
     #fill=0 塗りつぶさない / fill=1 塗りつぶす

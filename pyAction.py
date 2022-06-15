@@ -62,8 +62,20 @@ class App:
         if pyxel.btnp(pyxel.KEY_Q):
             pyxel.quit()
 
-        #右へ移動
-        self.px += self.vx
+
+        #LR
+        if pyxel.btn(pyxel.KEY_LEFT):
+            #self.vx = -2
+            self.px -= 2
+        if pyxel.btn(pyxel.KEY_RIGHT):
+            self.px += 2
+            #self.vx = 2
+
+
+        #移動
+        #self.px += self.vx
+
+        self.vx=0
 
         #Jump
         if pyxel.btnp(pyxel.KEY_SPACE):
@@ -75,26 +87,29 @@ class App:
             self.py += self.vy
             self.vy += self.gravity
 
+        #プレイヤーのコリジョン領域を更新
+        self.plsp.spcolr_set(self.px, self.py)
+
         #床との接触判定
         for i in range(len(FloorList)):
             if self.plsp.sphitr(FloorList[i])==True:
                 #FloorList[i].show_collision_r(True)
                 self.flgJmp = False
-                self.vy=0
+                #self.vy=0
                 self.py=FloorList[i]._y-16
                 #print(FloorList[i]._y)
                 #print(self.py)
+                break
                 
     def draw(self):
         pyxel.cls(1)
 
-
         #PlayerChar
         self.plsp.spdraw(self.px, self.py)
         #self.plsp.show_collision_c(0)
-        #self.plsp.show_collision_r(False)
+        self.plsp.show_collision_r(False)
 
-      #床
+        #床表示
         self.drwFlr()
  
 
